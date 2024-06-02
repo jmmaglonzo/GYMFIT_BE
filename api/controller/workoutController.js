@@ -5,6 +5,13 @@ import ErrorResponse from "../utils/errorResponse.js";
 export const getAllWorkout = asyncHandler(async (req, res, next) => {
   const workouts = await Workout.find().sort({ createdAt: -1 });
 
+  if (workouts.length === 0) {
+    res.status(404).json({
+      success: false,
+      error: "No data found",
+    });
+  }
+
   res.status(200).json(workouts);
 });
 
@@ -13,9 +20,7 @@ export const getWorkout = asyncHandler(async (req, res, next) => {
   const workout = await Workout.findById(id);
 
   if (!workout) {
-    return next(
-      new ErrorResponse(`No such workout with an ID of ${req.params.id}`, 404)
-    );
+    return next(new ErrorResponse(`No such workout with an ID of ${id}`, 404));
   }
 
   res.status(200).json(workout);
