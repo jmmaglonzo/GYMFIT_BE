@@ -40,6 +40,26 @@ UserSchema.statics.signup = async function (email, password) {
 
   return user;
 };
+
+UserSchema.statics.login = async function (email, password) {
+  if (!email || !password) {
+    throw Error("All fields must be filled");
+  }
+
+  const user = await this.findOne({ email });
+
+  if (!user) {
+    throw Error("No user found!");
+  }
+
+  const match = await bcrypt.compare(password, user.password);
+
+  if (!match) {
+    throw Error("Invalid Credentials");
+  }
+
+  return user;
+};
 const UserModel = model("user", UserSchema);
 
 export default UserModel;
