@@ -3,7 +3,7 @@ import asyncHandler from "../middleware/asyncHandler.js";
 import ErrorResponse from "../utils/errorResponse.js";
 
 export const getAllWorkout = asyncHandler(async (req, res, next) => {
-  const workouts = await Workout.find().sort({ createdAt: -1 });
+  const workouts = await Workout.find().sort({ createdAt: 1 });
 
   if (workouts.length === 0) {
     res.status(404).json({
